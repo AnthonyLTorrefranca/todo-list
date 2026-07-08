@@ -12,13 +12,16 @@ export default function Todo() {
   function handleSubmit(e){
     e.preventDefault()
     if (task.trim() === ""){
-      setBlank(prev => ({...prev, idle:false, input:true}))
+      setBlank(prev=>({idle: false, input: true}))
       setTimeout(() => {
-        setBlank(prev => ({...prev, idle:true, input:false}))
-      }, 1400);
+        setBlank(prev=>({idle: true, input: false}))
+      }, 1500);
       return
     }
-    setTaskList(prev=>[...prev, task])
+    const newTask = {
+      id: crypto.randomUUID(), text: task
+    }
+    setTaskList(prev=>[...prev, newTask])
     setTask("")
   }
   function handleDelete(index){
@@ -28,19 +31,16 @@ export default function Todo() {
   function moveUp(index){
     const updatedTask = [...taskList]
     if (index > 0){
-      [updatedTask[index-1], updatedTask[index]] = [updatedTask[index], updatedTask[index - 1]] 
+      [updatedTask[index - 1], updatedTask[index]] = [updatedTask[index], updatedTask[index - 1]]
       setTaskList(updatedTask)
       return
     }
   }
   function moveDown(index){
-    const updatedTask = [...taskList];
-    if (index < updatedTask.length - 1){
-      [updatedTask[index + 1], updatedTask[index]] = [updatedTask[index], updatedTask[index + 1]]
-      setTaskList(updatedTask)
-      return
+    const updatedTask = [...taskList]
+    if (index ){
+
     }
-    console.log("nah")
   }
   useEffect(()=>{console.log(taskList)},[taskList])
   return (
@@ -51,17 +51,18 @@ export default function Todo() {
         <section className="taskGroup">
           <input type="text" placeholder="Add your task here:" 
             value={task} onChange={handleChange} />
-          <button type="button" type="submit">ADD</button>
+          <button type="submit">ADD</button>
         </section>
         <section className='tasks'>
           <ul>
-            {taskList.map((task, index)=>[ <li key={index}> {task}
-              <section className="listBtn">
-                <button type="button" onClick={()=>moveUp(index)}>☝️</button>
-                <button type="button" onClick={()=>moveDown(index)}>👇</button>
-                <button type="button" onClick={()=>handleDelete(index)}>❌</button>
-              </section>
-            </li> ])}
+            {taskList.map((task, index) =>(
+              <li key={task.id}>{task.text}
+                <section className="listBtn">
+                  <button type="button" onClick={()=>moveUp(index)}>☝️</button>
+                  <button type="button" onClick={()=>moveDown(index)}>👇</button>
+                  <button type="button" onClick={()=>handleDelete(index)}>❌</button>
+                </section>
+              </li> ))}
           </ul>
         </section>
       </form>
