@@ -12,6 +12,8 @@ h1 {
 
 .taskGroup{
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .taskGroup input{
@@ -70,4 +72,5 @@ h1 {
     font-size: 20px;
     color: red;
     padding: 28px;
+    margin: 0 85px;
 }
