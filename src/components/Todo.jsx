@@ -7,8 +7,12 @@ export default function Todo(){
     const [taskList, setTaskList] = useState([])
     function handleSubmit(e){
         e.preventDefault()
-        if (task.trim() === ""){
+        const taskContent = task.trim()
+        if (taskContent === ""){
             setAlert("blank")
+            return
+        } else if (taskList.some(item=> item.text.toLowerCase() === taskContent.toLowerCase())){
+            setAlert("duplicate")
             return
         }
         const newTask = { id: crypto.randomUUID(), text: task}
@@ -47,7 +51,6 @@ return(
                 <input type="text" name="task" value={task} onChange={handleChange}
                     placeholder="Add task here..." />
                 <button>ADD</button>
-
             </section>
         </form>
         <section className="tasks">
